@@ -22,7 +22,7 @@ def registrar_aspirante(request):
         if form.is_valid():
             puntaje = EvaluacionAdmision.objects.create()
             Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento,
-                                     numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad, puntaje=puntaje.id)
+                                     numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad, puntaje=puntaje)
             return redirect('aspirante:index')
     else:
         form = registrarAspirante()
