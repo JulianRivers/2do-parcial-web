@@ -14,7 +14,10 @@ def registrar_aspirante(request):
         profesion = request.FILES['profesion']
         ciudad = request.POST['ciudad']
         edad = request.POST['edad']
+
     return render(request, 'registrar.html')
 
 def listar(request):
-    return render(request, 'listado.html')
+    aspirantes = Aspirante.objects.all()
+    context = {'aspirantes': aspirantes}
+    return render(request, 'listado.html', context)
