@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
-
+from django.db.models.functions import Lower
 # Create your views here.
 
 
@@ -31,6 +31,6 @@ def registrar_aspirante(request):
 
 
 def listar(request):
-    aspirantes = Aspirante.objects.all()
+    aspirantes = Aspirante.objects.order_by(Lower('puntaje__total_puntos').desc())
     context = {'aspirantes': aspirantes}
     return render(request, 'listado.html', context)

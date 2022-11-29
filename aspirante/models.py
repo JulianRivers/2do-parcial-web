@@ -20,10 +20,10 @@ class EvaluacionAdmision(models.Model):
 class Aspirante(models.Model):
     nombre = models.CharField('Nombre', max_length=100)
     apellido = models.CharField('Apellido', max_length=100)
-    tipo_documento = models.CharField('Tipo de documento', unique=True, max_length=100)
+    tipo_documento = models.CharField('Tipo de documento', max_length=100)
     numero_documento = models.CharField('Documento de identidad', unique=True, max_length=100)
-    profesion = models.CharField('Profesión', unique=True, max_length=100)
-    ciudad = models.CharField('Ciudad', unique=True, max_length=100)
+    profesion = models.CharField('Profesión', max_length=100)
+    ciudad = models.CharField('Ciudad', max_length=100)
     edad = models.IntegerField('Edad',default=0)
     puntaje = models.OneToOneField(EvaluacionAdmision, on_delete=models.CASCADE)
     
