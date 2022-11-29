@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import*
+from .forms import *
 
 # Create your views here.
-def  index(request):
+
+
+def index(request):
     return render(request, 'index.html')
+
 
 def registrar_aspirante(request):
     if request.method == 'POST':
@@ -17,13 +20,15 @@ def registrar_aspirante(request):
         edad = request.POST['edad']
         form = registrarAspirante(request.POST)
         if form.is_valid():
-            Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento, 
-                                    numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad)
+            puntaje = EvaluacionAdmision.objects.create()
+            Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento,
+                                     numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad, puntaje=puntaje.id)
             return redirect('aspirante:index')
     else:
         form = registrarAspirante()
     context = {'form': form}
     return render(request, 'registrar.html', context)
+
 
 def listar(request):
     aspirantes = Aspirante.objects.all()
