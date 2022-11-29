@@ -1,0 +1,28 @@
+{% extends base %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class="container w-75 bg-light mt-5 rounded shadow">
+    <div class="row align-items-stretch">
+        <div class="col bg-white p-5 rounded-end">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text py-2">Ingresa los datos del Aspirante</h3>
+                    <!-- POST  -->
+                    <form name="registrar" method="POST" enctype="multipart/form-data" autocomplete="off">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <div class="form-group">
+                            <div class="d-grid">
+                                    <div class="col col-lg-9">
+                                        <button type="submit" class="btn btn-danger btn-lg w-100 my-1">Registrar</button>
+                                    </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

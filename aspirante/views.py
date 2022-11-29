@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
+from .forms import*
 
 # Create your views here.
 def  index(request):
@@ -14,7 +15,16 @@ def registrar_aspirante(request):
         profesion = request.FILES['profesion']
         ciudad = request.POST['ciudad']
         edad = request.POST['edad']
-    return render(request, 'registrar.html')
+        form = registrarAspirante(request.POST)
+        if form.is_valid():
+            form.save()
+            Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento, 
+                                    numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad)
+            return redirect('aspirante:index')
+    else:
+        form = registrarAspirante()
+    context = {'form': form}
+    return render(request, 'registrar.html', context)
 
 def listar(request):
     return render(request, 'listado.html')
