@@ -1,7 +1,32 @@
 {% extends 'base.html' %}
 
-{% block title %}Inicio{% endblock title %}
+{% block title %}Listado{% endblock title %}
 
 {% block body %}
-hola
+<div class="container mt-4 shadow-lg p-3 mb-5 bg-body rounded">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Documento</th>
+                <th>Profesión</th>
+                <th>Puntaje</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aspirante in aspirantes %}
+          <tr>
+            <td>{{ aspirante.id }}</td>
+            <td>{{ aspirante.nombre }}</td>
+            <td>{{ aspirante.apellido }}</td>
+            <td>{{ aspirante.numero_documento }}</td>
+            <td>{{ aspirante.profesion }}</td>
+            <td>{{ aspirante.puntaje.total_puntos }}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock body %}
