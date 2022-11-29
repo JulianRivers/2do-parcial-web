@@ -27,4 +27,6 @@ def registrar_aspirante(request):
     return render(request, 'registrar.html', context)
 
 def listar(request):
-    return render(request, 'listado.html')
+    aspirantes = Aspirante.objects.all()
+    context = {'aspirantes': aspirantes}
+    return render(request, 'listado.html', context)
