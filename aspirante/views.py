@@ -12,12 +12,11 @@ def registrar_aspirante(request):
         apellido = request.POST['apellido']
         tipo_documento = request.POST['tipo_documento']
         numero_documento = request.POST['numero_documento']
-        profesion = request.FILES['profesion']
+        profesion = request.POST['profesion']
         ciudad = request.POST['ciudad']
         edad = request.POST['edad']
         form = registrarAspirante(request.POST)
         if form.is_valid():
-            form.save()
             Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento, 
                                     numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad)
             return redirect('aspirante:index')
