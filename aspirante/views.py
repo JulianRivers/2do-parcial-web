@@ -36,16 +36,13 @@ def registrar_aspirante(request):
 #no sirve
 def listar(request):
     lista = []
-    lista2 = []
-    evaluaciones = EvaluacionAdmision.objects.order_by(Lower('total_puntos').asc())
+    evaluaciones = EvaluacionAdmision.objects.order_by(Lower('total_puntos').desc())
     for evaluacion in evaluaciones:
         id_asp = evaluacion.aspirante_id
         aspirante = Aspirante.objects.get(id=id_asp)
         aspirante.puntaje = evaluacion.total_puntos
-        lista2.append(evaluacion.total_puntos)
         lista.append(aspirante)
-    print(lista)
-    context = {'aspirantes': lista, 'puntajes':lista2}
+    context = {'aspirantes': lista}
     return render(request, 'listado.html', context)
 
 def listar_cargo(request, cargo=2):
@@ -53,11 +50,9 @@ def listar_cargo(request, cargo=2):
     listado_aspirantes = []
     aspirante = None
     for evaluacion in evaluaciones:
-        if evaluacion.cargo_id==cargo and evaluacion.estado_admision_id==1:
-            aspirante = f"{evaluacion.aspirante}" + "{nombre :"+ f"{evaluacion.aspirante.nombre}" 
-            + ",apellido :"+ f"{evaluacion.aspirante.apellido}" + ",tipo_documento :"+ f"{evaluacion.aspirante.tipo_documento}" 
-            + ",numero_documento :"+ f"{evaluacion.aspirante.numero_documento}" + ",profesion :"+ f"{evaluacion.aspirante.profesion}" 
-            + ",ciudad :"+ f"{evaluacion.aspirante.ciudad}" + ",edad :"+ f"{evaluacion.aspirante.edad}" + ",cargo :"+ f"{evaluacion.cargo.nombre}"
-        listado_aspirantes.append(aspirante)
-        print(evaluacion.estado_admision)
-    return JsonResponse(json.dumps(listado_aspirantes), safe=False)
+        if evaluacion.cargo_id==cargo and evaluacion.admision_id==1:
+            aspirante = Aspirante.objects.get(id=evaluacion.aspirante_id)
+            listado_aspirantes.append(aspirante)
+        print(aspirante)
+    data =  json.dumps(listado_aspirantes)
+    return JsonResponse(data, safe=False)
