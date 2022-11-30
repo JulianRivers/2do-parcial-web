@@ -24,7 +24,7 @@ def registrar_aspirante(request):
         if form.is_valid():
             aspirante = Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento,
                                      numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad)
-            admision = EstadoAdmision.objects.create()
+            admision = EstadoAdmision.objects.get(id=3)
             cargo = Cargo.objects.get(id=1)
             evaluacion = EvaluacionAdmision.objects.create(aspirante=aspirante, admision=admision,cargo=cargo)
             return redirect('aspirante:index')
@@ -54,5 +54,5 @@ def listar_cargo(request, cargo=2):
             aspirante = Aspirante.objects.get(id=evaluacion.aspirante_id)
             listado_aspirantes.append(aspirante)
         print(aspirante)
-    data =  json.dumps(listado_aspirantes)
+    data = serializers.serialize('json', listado_aspirantes)
     return JsonResponse(data, safe=False)
