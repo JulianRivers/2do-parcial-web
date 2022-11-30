@@ -2,21 +2,6 @@ from django.db import models
 
 # Create your models here.
 
-class EvaluacionAdmision(models.Model):
-    fecha = models.DateField('Fecha de evaluación', auto_now_add=True)
-    puntos_cv = models.IntegerField('Puntos Hoja de Vida',default=0)
-    puntos_experiencias = models.IntegerField('Puntos Hoja de Vida',default=0)
-    puntos_postgrados = models.IntegerField('Puntos Postgrados',default=0)
-    puntos_certificaciones = models.IntegerField('Puntos Certificaciones',default=0)
-    puntos_ingles = models.IntegerField('Puntos Ingles',default=0)
-    total_puntos = models.IntegerField('Total Puntos',default=0)
-    
-    USERNAME_FIELD = 'id'
-    REQUIRED_FIELDS = ['puntos_cv', 'puntos_experiencias', 'puntos_postgrados', 'puntos_certificaciones', 'puntos_ingles','total_puntos']
-
-    def __str__(self):
-        return f"Evaluación Admision: fecha: {self.fecha} Total de puntos: {self.total_puntos}"
-        
 class Aspirante(models.Model):
     nombre = models.CharField('Nombre', max_length=100)
     apellido = models.CharField('Apellido', max_length=100)
@@ -25,13 +10,12 @@ class Aspirante(models.Model):
     profesion = models.CharField('Profesión', max_length=100)
     ciudad = models.CharField('Ciudad', max_length=100)
     edad = models.IntegerField('Edad',default=0)
-    puntaje = models.OneToOneField(EvaluacionAdmision, on_delete=models.CASCADE)
-    
+
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['nombre', 'apellido', 'tipo_documento', 'numero_documento', 'profesion','ciudad','edad']
 
     def __str__(self):
-        return f"Aspirante: documento: {self.numeroDocumento} nombre: {self.nombre} {self.apellido}"
+        return f"Aspirante: documento: {self.numero_documento} nombre: {self.nombre} {self.apellido}"
 
 class Cargo(models.Model):
     nombre = models.CharField('Nombre', max_length=100)
@@ -54,3 +38,21 @@ class EstadoAdmision(models.Model):
 
     def __str__(self):
         return f"Estado de Admision: {self.nombre} nombre: {self.descripcion} descripcion:"
+
+class EvaluacionAdmision(models.Model):
+    fecha = models.DateField('Fecha de evaluación', auto_now_add=True)
+    puntos_cv = models.IntegerField('Puntos Hoja de Vida',default=0)
+    puntos_experiencias = models.IntegerField('Puntos Hoja de Vida',default=0)
+    puntos_postgrados = models.IntegerField('Puntos Postgrados',default=0)
+    puntos_certificaciones = models.IntegerField('Puntos Certificaciones',default=0)
+    puntos_ingles = models.IntegerField('Puntos Ingles',default=0)
+    total_puntos = models.IntegerField('Total Puntos',default=0)
+    cargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
+    aspirante = models.ForeignKey(Aspirante, on_delete=models.CASCADE)
+    estado_admision= models.ForeignKey(EstadoAdmision, on_delete=models.CASCADE)
+    
+    USERNAME_FIELD = 'id'
+    REQUIRED_FIELDS = ['puntos_cv', 'puntos_experiencias', 'puntos_postgrados', 'puntos_certificaciones', 'puntos_ingles','total_puntos']
+
+    def __str__(self):
+        return f"Evaluación Admision: fecha: {self.fecha} Total de puntos: {self.total_puntos}"
