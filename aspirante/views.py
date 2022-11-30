@@ -48,6 +48,16 @@ def listar(request):
     context = {'aspirantes': lista, 'puntajes':lista2}
     return render(request, 'listado.html', context)
 
-def listar_cargo(request, cargo=""):
-    aspirante = serializers.serialize('json', Aspirante.objects.order_by(''))
-    return JsonResponse(json.dumps(aspirante), safe=False)
+def listar_cargo(request, cargo=2):
+    evaluaciones = EvaluacionAdmision.objects.all()
+    listado_aspirantes = []
+    aspirante = None
+    for evaluacion in evaluaciones:
+        if evaluacion.cargo_id==cargo and evaluacion.estado_admision_id==1:
+            aspirante = f"{evaluacion.aspirante}" + "{nombre :"+ f"{evaluacion.aspirante.nombre}" 
+            + ",apellido :"+ f"{evaluacion.aspirante.apellido}" + ",tipo_documento :"+ f"{evaluacion.aspirante.tipo_documento}" 
+            + ",numero_documento :"+ f"{evaluacion.aspirante.numero_documento}" + ",profesion :"+ f"{evaluacion.aspirante.profesion}" 
+            + ",ciudad :"+ f"{evaluacion.aspirante.ciudad}" + ",edad :"+ f"{evaluacion.aspirante.edad}" + ",cargo :"+ f"{evaluacion.cargo.nombre}"
+        listado_aspirantes.append(aspirante)
+        print(evaluacion.estado_admision)
+    return JsonResponse(json.dumps(listado_aspirantes), safe=False)
