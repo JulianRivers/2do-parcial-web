@@ -8,8 +8,12 @@ import json
 # Create your views here.
 
 def index(request):
-    return render(request, 'index.html')
-
+    if request.method == 'POST':
+        cargo=request.POST['cargos']
+        return redirect('/aspirantes/'+cargo)
+    cargos = Cargo.objects.all()
+    context = {'cargos':cargos}
+    return render(request, 'index.html', context)
 
 def registrar_aspirante(request):
     if request.method == 'POST':
