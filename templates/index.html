@@ -4,26 +4,34 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% block body %}
 <div class="sistema d-flex align-items-center justify-content-center flex-column">
-    <hr><hr>
+    <hr>
+    <hr>
     <div class="titulo">
         <h1>SISTEMA DE ADMISIÓN Y REGISTRO</h1>
     </div>
     <hr>
     <div class="boton1">
-        <div class="container"> 
-        <a href="/aspirante/" class="btn1 btn btn-dark btncolor1" role="button">Ver listado de Admitidos
-            <div class="dot"></div>
-        </a>
-        <a href="/registrar/" class="btn1 btn btn-light btncolor" role="button">Registrar Aspirante
-            <div class="dot"></div>
-        </a>
-        <h2>QUE CARGO DESEA LISTAR</h2>
-        <select name="cargos" id="cargos">
-            {% for cargo in cargos %}
-                <option value="{{cargo.id}}">{{cargo.nombre}}</option>
-            {% endfor %}
-            <input type="submit" value="listar">
-        </select>
+        <div class="container">
+            <a href="/aspirante/" class="btn1 btn btn-dark btncolor1" role="button">Ver listado de Admitidos
+                <div class="dot"></div>
+            </a>
+            <a href="/registrar/" class="btn1 btn btn-light btncolor" role="button">Registrar Aspirante
+                <div class="dot"></div>
+            </a>
+            <div class="card" style="width: 18rem;">
+                <div class="card-body" style="margin: 10px;">
+                  <h5 class="card-title">Listar aspirantes por cargo</h5>
+                  <form method="post">
+                    {% csrf_token %}
+                    <select name="cargos" id="cargos">
+                        {% for cargo in cargos %}
+                        <option value="{{cargo.id}}">{{cargo.nombre}}</option>
+                        {% endfor %}
+                        <input type="submit" class="btn btn-dark" style="margin: 10px;" value="listar">
+                    </select>
+                </form>
+                </div>
+              </div>
+        </div>
     </div>
-</div>
-{% endblock body %}
+    {% endblock body %}

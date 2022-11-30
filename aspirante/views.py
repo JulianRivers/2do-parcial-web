@@ -37,7 +37,6 @@ def registrar_aspirante(request):
     context = {'form': form}
     return render(request, 'registrar.html', context)
 
-#no sirve
 def listar(request):
     lista = []
     evaluaciones = EvaluacionAdmision.objects.order_by(Lower('total_puntos').desc())
@@ -45,11 +44,12 @@ def listar(request):
         id_asp = evaluacion.aspirante_id
         aspirante = Aspirante.objects.get(id=id_asp)
         aspirante.puntaje = evaluacion.total_puntos
-        lista.append(aspirante)
+        if evaluacion.admision_id==1:
+            lista.append(aspirante)
     context = {'aspirantes': lista}
     return render(request, 'listado.html', context)
 
-def listar_cargo(request, cargo=2):
+def listar_cargo(request, cargo=1):
     evaluaciones = EvaluacionAdmision.objects.all()
     listado_aspirantes = []
     aspirante = None
