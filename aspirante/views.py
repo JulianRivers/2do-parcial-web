@@ -24,6 +24,9 @@ def registrar_aspirante(request):
         if form.is_valid():
             aspirante = Aspirante.objects.create(nombre=nombre, apellido=apellido, tipo_documento=tipo_documento,
                                      numero_documento=numero_documento, profesion=profesion, ciudad=ciudad, edad=edad)
+            admision = EstadoAdmision.objects.create()
+            cargo = Cargo.objects.get(id=1)
+            evaluacion = EvaluacionAdmision.objects.create(aspirante=aspirante, admision=admision,cargo=cargo)
             return redirect('aspirante:index')
     else:
         form = registrarAspirante()
@@ -32,8 +35,17 @@ def registrar_aspirante(request):
 
 #no sirve
 def listar(request):
-    aspirantes = EvaluacionAdmision.objects.order_by(Lower('puntaje__total_puntos').desc())
-    context = {'aspirantes': aspirantes}
+    lista = []
+    lista2 = []
+    evaluaciones = EvaluacionAdmision.objects.order_by(Lower('total_puntos').asc())
+    for evaluacion in evaluaciones:
+        id_asp = evaluacion.aspirante_id
+        aspirante = Aspirante.objects.get(id=id_asp)
+        aspirante.puntaje = evaluacion.total_puntos
+        lista2.append(evaluacion.total_puntos)
+        lista.append(aspirante)
+    print(lista)
+    context = {'aspirantes': lista, 'puntajes':lista2}
     return render(request, 'listado.html', context)
 
 def listar_cargo(request, cargo=""):

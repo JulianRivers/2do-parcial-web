@@ -34,7 +34,7 @@ class EstadoAdmision(models.Model):
     fecha_creacion = models.DateField('Fecha de creacion', auto_now_add=True)
     
     USERNAME_FIELD = 'id'
-    REQUIRED_FIELDS = ['nombre', 'descripcion', 'fecha_creacion',]
+    REQUIRED_FIELDS = ['fecha_creacion',]
 
     def __str__(self):
         return f"Estado de Admision: {self.nombre} nombre: {self.descripcion} descripcion:"
@@ -47,9 +47,9 @@ class EvaluacionAdmision(models.Model):
     puntos_certificaciones = models.IntegerField('Puntos Certificaciones',default=0)
     puntos_ingles = models.IntegerField('Puntos Ingles',default=0)
     total_puntos = models.IntegerField('Total Puntos',default=0)
-    cargo = models.ForeignKey(Cargo, on_delete=models.CASCADE)
-    aspirante = models.ForeignKey(Aspirante, on_delete=models.CASCADE)
-    estado_admision= models.ForeignKey(EstadoAdmision, on_delete=models.CASCADE)
+    cargo = models.ForeignKey(Cargo, on_delete=models.CASCADE, related_name='cargo', null=True)
+    aspirante = models.ForeignKey(Aspirante, on_delete=models.CASCADE, related_name='aspirante')
+    admision= models.ForeignKey(EstadoAdmision, on_delete=models.CASCADE, related_name='admision')
     
     USERNAME_FIELD = 'id'
     REQUIRED_FIELDS = ['puntos_cv', 'puntos_experiencias', 'puntos_postgrados', 'puntos_certificaciones', 'puntos_ingles','total_puntos']
